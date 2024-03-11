@@ -5,6 +5,12 @@ const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const productController = require("../controllers/productController");
+          
+cloudinary.config({ 
+  cloud_name: 'dvsryvrpn', 
+  api_key: '293146465739794', 
+  api_secret: 'N5s5LJQb0cznepYhSkQwb9W8fbA' 
+});
 
 const imageCloudinaryStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
@@ -16,14 +22,14 @@ const imageCloudinaryStorage = new CloudinaryStorage({
 
 const imageCloudinaryUpload = multer({ storage: imageCloudinaryStorage });
 
-// router.get("/products", productController.getProducts);
+router.get("/products", productController.getProducts);
 
-// router.get("/products/:id", productController.getProductById);
+router.get("/products/:id", productController.getProductById);
 
-/*router.post(
+router.post(
   "/createProduct",
   imageCloudinaryUpload.array("Image"),
   productController.createProduct
-);*/
+);
 
 module.exports = router;
