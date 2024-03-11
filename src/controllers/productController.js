@@ -27,7 +27,7 @@ const createProduct = async (req, res) => {
       const newProduct= req.body;
       const ProductImageUpload = req.files;
       const firstImage = ProductImageUpload[0].filename;
-      const cloudinaryImageUrl = `https://res.cloudinary.com/dpnrapsvi/image/upload/${firstImage}`;
+      const cloudinaryImageUrl = `https://res.cloudinary.com/dvsryvrpn/image/upload/${firstImage}`;
       newProduct.ProductID = req.body.ProductID;
   
       const newProductEntry = await db.Product.create({
