@@ -24,6 +24,9 @@ function productData(sequelize, DataTypes) {
         Image: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        CategoryID: {
+            type: DataTypes.INTEGER,
         }
     };
 

@@ -24,6 +24,8 @@ const imageCloudinaryUpload = multer({ storage: imageCloudinaryStorage });
 
 router.get("/products", productController.getProducts);
 
+router.get("/category", productController.getCategory);
+
 router.get("/products/:id", productController.getProductById);
 
 router.post(
