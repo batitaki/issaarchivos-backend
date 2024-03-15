@@ -26,6 +26,10 @@ router.get("/products", productController.getProducts);
 
 router.get("/category", productController.getCategory);
 
+router.get("/category/:categoryId", productController.getCategoryById); // Agregar la nueva ruta
+
+router.get("/byCategory/:categoryId", productController.getProductsByCategory);
+
 router.get("/products/:id", productController.getProductById);
 
 router.post(

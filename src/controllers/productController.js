@@ -66,9 +66,43 @@ const getCategory = async (req, res) => {
   }
 };
 
+const getProductsByCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const products = await db.Product.findAll({
+      where: { CategoryID: categoryId },
+    });
+    res.json(products);
+  } catch (error) {
+    console.error(
+      `Error obtaining products for category with ID ${req.params.categoryId}:`,
+      error
+    );
+    res.status(500).json({ error: "Error obtaining product for category" });
+  }
+};
+
+const getCategoryById = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const category = await db.Category.findByPk(categoryId);
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.json(category);
+  } catch (error) {
+    console.error(`Error obtaining category with ID ${req.params.categoryId}:`, error);
+    res.status(500).json({ error: "Error obtaining category" });
+  }
+};
+
 module.exports = {
   getProducts,
   createProduct,
   getProductById,
   getCategory,
+  getProductsByCategory,
+  getCategoryById, // Agregar el nuevo método
 };
