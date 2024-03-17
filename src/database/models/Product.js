@@ -46,6 +46,11 @@ function productData(sequelize, DataTypes) {
         as: 'Category',
         foreignKey: 'CategoryID',
       });
+
+      Product.hasMany(models.Media, {
+        as: 'Media',
+        foreignKey: 'ProductID',
+      });
     };
     return Product;
 }

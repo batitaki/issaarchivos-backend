@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
+const mediaRoutes = require("./mediaRoutes")
 const productRoutes = require("./productRoutes")
 
 router.get("/", (req, res) => {
@@ -9,6 +10,8 @@ router.get("/", (req, res) => {
   });
 
 router.use("/products", productRoutes);
-// Agrega otras rutas según sea necesario
+router.use("/media", mediaRoutes);
+
+
 
 module.exports = router;
