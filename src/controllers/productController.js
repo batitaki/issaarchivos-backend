@@ -1,9 +1,12 @@
 // ProductController.js
 const db = require("../database/models");
 
+
 const getProducts = async (req, res) => {
   try {
-    const products = await db.Product.findAll();
+    const products = await db.Product.findAll({
+      include: [{ model: db.Category, as: "Category" }],
+    });
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -30,7 +33,6 @@ const getProductById = async (req, res) => {
       .json({ error: `Error obtaining Product details: ${error.message}` });
   }
 };
-
 const createProduct = async (req, res) => {
   try {
     const newProduct = req.body;

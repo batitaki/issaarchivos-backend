@@ -26,6 +26,10 @@ const upload = multer({ storage: storage });
 
 router.get("/media", mediaController.getAllMedia)
 
+router.get("/media/color", mediaController.getMediaColors)
+
+router.post("/create-color", mediaController.createColor);
+
 // Ruta para subir una imagen
 router.post("/upload", upload.array("Image"), mediaController.uploadMedia);
 

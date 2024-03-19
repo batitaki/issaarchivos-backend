@@ -26,13 +26,19 @@ function mediaData(sequelize, DataTypes) {
     const Media = sequelize.define(mediaTableName, mediaColumns, mediaConfig);
   
     Media.associate = function(models) {
-      // Definir la asociación con el modelo User
       Media.belongsTo(models.Product, {
         foreignKey: 'ProductID',
         as: 'Product' // Nombre del alias para la asociación
       });
+    
+      Media.belongsToMany(models.Color, {
+        through: 'MediaColor', // Tabla intermedia que relaciona los colores con las imágenes de media
+        foreignKey: 'MediaID',
+        otherKey: 'ColorID',
+        as: 'Colors', // Alias para la relación
+      });
     };
-  
+    
     return Media;
   }
   
