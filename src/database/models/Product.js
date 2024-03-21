@@ -1,9 +1,6 @@
 // models/Product.js
-
 function productData(sequelize, DataTypes) {
-    let productTableName = 'Product';
-
-    let productColumns = {
+    const Product = sequelize.define('Product', {
         ID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -28,30 +25,29 @@ function productData(sequelize, DataTypes) {
         CategoryID: {
             type: DataTypes.INTEGER,
         }
-    };
-
-    let productConfig = {
+    }, {
         timestamps: false,
         tableName: 'Product',
+    });
+
+    Product.associate = function(models) {
+        Product.belongsTo(models.Category, {
+            as: 'Category',
+            foreignKey: 'CategoryID',
+        });
+
+        Product.belongsToMany(models.Size, {
+            through: 'ProductSize', // Nombre de la tabla intermedia
+            as: 'Sizes', // Alias para la relación
+            foreignKey: 'ProductID' // Clave foránea en la tabla intermedia
+        });
+
+        Product.hasMany(models.Media, {
+            as: 'Media',
+            foreignKey: 'ProductID',
+        });
     };
 
-    const Product = sequelize.define(
-        productTableName,
-        productColumns,
-        productConfig
-    );
-    
-    Product.associate = function (models) {
-      Product.belongsTo(models.Category, {
-        as: 'Category',
-        foreignKey: 'CategoryID',
-      });
-
-      Product.hasMany(models.Media, {
-        as: 'Media',
-        foreignKey: 'ProductID',
-      });
-    };
     return Product;
 }
 

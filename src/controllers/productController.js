@@ -5,7 +5,7 @@ const db = require("../database/models");
 const getProducts = async (req, res) => {
   try {
     const products = await db.Product.findAll({
-      include: [{ model: db.Category, as: "Category" }],
+      include: [{ model: db.Category, as: "Category" }, { model: db.Size, as: "Sizes" }],
     });
     res.json(products);
   } catch (error) {
@@ -18,7 +18,7 @@ const getProductById = async (req, res) => {
   try {
     const productId = req.params.id;
     const productDetails = await db.Product.findByPk(productId, {
-      include: [{ model: db.Category, as: "Category" }],
+      include: [{ model: db.Category, as: "Category" }, { model: db.Size, as: "Sizes" }],
     });
 
     if (!productDetails) {
@@ -28,11 +28,11 @@ const getProductById = async (req, res) => {
     res.json(productDetails);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: `Error obtaining Product details: ${error.message}` });
+    res.status(500).json({ error: `Error obtaining Product details: ${error.message}` });
   }
 };
+
+
 const createProduct = async (req, res) => {
   try {
     const newProduct = req.body;
