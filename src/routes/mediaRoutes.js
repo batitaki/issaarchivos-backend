@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 
 router.get("/media", mediaController.getAllMedia)
 
-router.get("/media/color", mediaController.getMediaColors)
+router.get("/colors", mediaController.getMediaColors)
 
 router.post("/create-color", mediaController.createColor);
 
