@@ -21,16 +21,10 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// Configurar multer con el almacenamiento de Cloudinary
 const upload = multer({ storage: storage });
 
-router.get("/media", mediaController.getAllMedia)
+router.get("/media", mediaController.getAllMedia);
 
-router.get("/colors", mediaController.getMediaColors)
-
-router.post("/create-color", mediaController.createColor);
-
-// Ruta para subir una imagen
 router.post("/upload", upload.array("Image"), mediaController.uploadMedia);
 
 router.get("/byProduct/:productId", mediaController.getMediaByProduct);

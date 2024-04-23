@@ -1,11 +1,11 @@
-// ProductController.js
 const db = require("../database/models");
-
-
 const getProducts = async (req, res) => {
   try {
     const products = await db.Product.findAll({
-      include: [{ model: db.Category, as: "Category" }, { model: db.Size, as: "Sizes" }],
+      include: [
+        { model: db.Category, as: "Category" },
+        { model: db.Size, as: "Sizes" },
+      ],
     });
     res.json(products);
   } catch (error) {
@@ -18,7 +18,10 @@ const getProductById = async (req, res) => {
   try {
     const productId = req.params.id;
     const productDetails = await db.Product.findByPk(productId, {
-      include: [{ model: db.Category, as: "Category" }, { model: db.Size, as: "Sizes" }],
+      include: [
+        { model: db.Category, as: "Category" },
+        { model: db.Size, as: "Sizes" },
+      ],
     });
 
     if (!productDetails) {
@@ -28,10 +31,11 @@ const getProductById = async (req, res) => {
     res.json(productDetails);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: `Error obtaining Product details: ${error.message}` });
+    res
+      .status(500)
+      .json({ error: `Error obtaining Product details: ${error.message}` });
   }
 };
-
 
 const createProduct = async (req, res) => {
   try {
@@ -58,16 +62,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-const getCategory = async (req, res) => {
-  try {
-    const category = await db.Category.findAll();
-    res.json(category);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error obtaining categories" });
-  }
-};
-
 const getProductsByCategory = async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
@@ -84,27 +78,9 @@ const getProductsByCategory = async (req, res) => {
   }
 };
 
-const getCategoryById = async (req, res) => {
-  try {
-    const categoryId = req.params.categoryId;
-    const category = await db.Category.findByPk(categoryId);
-
-    if (!category) {
-      return res.status(404).json({ error: "Category not found" });
-    }
-
-    res.json(category);
-  } catch (error) {
-    console.error(`Error obtaining category with ID ${req.params.categoryId}:`, error);
-    res.status(500).json({ error: "Error obtaining category" });
-  }
-};
-
 module.exports = {
   getProducts,
   createProduct,
   getProductById,
-  getCategory,
   getProductsByCategory,
-  getCategoryById, // Agregar el nuevo método
 };
