@@ -1,4 +1,6 @@
 const db = require("../database/models");
+const { Op } = require('sequelize');
+
 const getProducts = async (req, res) => {
   try {
     const products = await db.Product.findAll({
@@ -49,6 +51,7 @@ const createProduct = async (req, res) => {
       Name: newProduct.Name,
       Description: newProduct.Description,
       Price: newProduct.Price,
+      Care: newProduct.Care,
       Image: cloudinaryImageUrl,
       CategoryID: newProduct.CategoryID,
     });
@@ -78,9 +81,33 @@ const getProductsByCategory = async (req, res) => {
   }
 };
 
+const searchProducts = async (req, res) => {
+  try {
+    const searchTerm = req.query.term; // Obtener el término de búsqueda de la consulta
+
+    // Realizar la búsqueda en la base de datos
+    const products = await db.Product.findAll({
+      where: {
+        // Utiliza tu lógica de búsqueda aquí, por ejemplo, buscar por nombre
+        Name: { [Op.like]: `%${searchTerm}%` }
+      },
+      include: [
+        { model: db.Category, as: "Category" },
+        { model: db.Size, as: "Sizes" },
+      ],
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ error: "Error searching products" });
+  }
+};
+
 module.exports = {
   getProducts,
   createProduct,
   getProductById,
   getProductsByCategory,
+  searchProducts
 };

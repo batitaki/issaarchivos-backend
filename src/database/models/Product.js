@@ -22,6 +22,10 @@ function productData(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        Care: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         CategoryID: {
             type: DataTypes.INTEGER,
         }
@@ -37,9 +41,9 @@ function productData(sequelize, DataTypes) {
         });
 
         Product.belongsToMany(models.Size, {
-            through: 'ProductSize', // Nombre de la tabla intermedia
-            as: 'Sizes', // Alias para la relación
-            foreignKey: 'ProductID' // Clave foránea en la tabla intermedia
+            through: 'ProductSize',
+            as: 'Sizes',
+            foreignKey: 'ProductID'
         });
 
         Product.hasMany(models.Media, {
