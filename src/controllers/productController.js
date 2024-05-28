@@ -1,11 +1,50 @@
 const db = require("../database/models");
 const { Op } = require('sequelize');
+const { MercadoPagoConfig, Preference } = require('mercadopago')
+
+require("dotenv").config();
+
+
+const client = new MercadoPagoConfig({ accessToken: "APP_USR-7069362539902743-102021-be7df0deb5aede5378166dc976e7954c-132322532" });
+
+const payment = async (req, res) => {
+  try {
+  const body = {
+      items: [
+        {
+          title: req.body.Name,
+          quantity: Number (req.body.Quantity),
+          unit_price: Number(req.body.Price),
+          currency_id: "ARS",
+        },
+      ],
+      back_urls: {
+        success: "https://www.youtube.com/watch?v=vEXwN9-tKcs&t=1s",
+        failure: "https://www.youtube.com/watch?v=vEXwN9-tKcs&t=1s",
+        pending: "https://www.youtube.com/watch?v=vEXwN9-tKcs&t=1s",
+      },
+      auto_return: "approved",
+    };
+    const preference = new Preference(client)
+    const result = await preference.create({ body })
+    res.json({ 
+        id: result.id,
+    });
+  } catch (error) {
+    console.error('Error creating payment:', error);
+    res.status(500).json({
+      error: "error al crear payment"
+    })
+  }
+};
+
 
 const getProducts = async (req, res) => {
   try {
     const products = await db.Product.findAll({
       include: [
         { model: db.Category, as: "Category" },
+
         { model: db.Size, as: "Sizes" },
       ],
     });
@@ -33,9 +72,7 @@ const getProductById = async (req, res) => {
     res.json(productDetails);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: `Error obtaining Product details: ${error.message}` });
+    res.status(500).json({ error: `Error obtaining product details: ${error.message}` });
   }
 };
 
@@ -59,9 +96,7 @@ const createProduct = async (req, res) => {
     res.json({ message: "Product created successfully" });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: `Error publishing the Product: ${error.message}` });
+    res.status(500).json({ error: `Error publishing the product: ${error.message}` });
   }
 };
 
@@ -73,24 +108,17 @@ const getProductsByCategory = async (req, res) => {
     });
     res.json(products);
   } catch (error) {
-    console.error(
-      `Error obtaining products for category with ID ${req.params.categoryId}:`,
-      error
-    );
-    res.status(500).json({ error: "Error obtaining product for category" });
+    console.error(`Error obtaining products for category with ID ${req.params.categoryId}:`, error);
+    res.status(500).json({ error: "Error obtaining products for category" });
   }
 };
 
 const searchProducts = async (req, res) => {
   try {
-    const searchTerm = req.query.term; // Obtener el término de búsqueda de la consulta
+    const searchTerm = req.query.term;
 
-    // Realizar la búsqueda en la base de datos
     const products = await db.Product.findAll({
-      where: {
-        // Utiliza tu lógica de búsqueda aquí, por ejemplo, buscar por nombre
-        Name: { [Op.like]: `%${searchTerm}%` }
-      },
+      where: { Name: { [Op.like]: `%${searchTerm}%` } },
       include: [
         { model: db.Category, as: "Category" },
         { model: db.Size, as: "Sizes" },
@@ -109,5 +137,6 @@ module.exports = {
   createProduct,
   getProductById,
   getProductsByCategory,
-  searchProducts
+  searchProducts,
+  payment
 };

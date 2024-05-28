@@ -28,6 +28,9 @@ router.get("/products/:id", productController.getProductById);
 
 router.get("/search", productController.searchProducts);
 
+router.post("/payment", productController.payment)
+
+
 router.get("/byCategory/:categoryId", productController.getProductsByCategory);
 
 router.post(
