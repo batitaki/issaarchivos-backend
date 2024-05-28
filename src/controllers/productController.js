@@ -5,7 +5,7 @@ const { MercadoPagoConfig, Preference } = require('mercadopago')
 require("dotenv").config();
 
 
-const client = new MercadoPagoConfig({ accessToken: "APP_USR-7069362539902743-102021-be7df0deb5aede5378166dc976e7954c-132322532" });
+const client = new MercadoPagoConfig({ accessToken: "APP_USR-4600131737237915-052723-b9dae626ed974b3df8ce092758b9b23d-1833251738" });
 
 const payment = async (req, res) => {
   try {
